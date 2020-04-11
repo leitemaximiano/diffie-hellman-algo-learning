@@ -1,24 +1,50 @@
 #include <stdio.h>
-#include <math.h>
-#include <locale.h>
 
-int main(int argv, char *argc[])
-{
-  setlocale(LC_ALL, "portugues");
-  int base, key, divider, mod;
+typedef unsigned long long INT64BYTES;
 
-  printf("Digite um número inteiro para ser a base: ");
-  scanf("%d", &base);
-  printf("Digite sua chave: ");
-  scanf("%d", &key);
+INT64BYTES power(INT64BYTES base, INT64BYTES high);
+INT64BYTES mod(INT64BYTES dividend, INT64BYTES divider);
 
-  printf("Digite o valor que vamos dividir o valor da potência, %d ^ %d: ", base, key);
-  scanf("%d", &divider);  
-  
-  mod = pow(base, key);
-  mod %= divider;
+int main() 
+{ 
+  INT64BYTES base, high, divider, my_mod, mod_friend, key_private;
 
-  printf("Envie o número %d", mod);
-  
-  return 0;
+  printf("Digite a base: ");
+  scanf("%lld", &base);
+
+  printf("Digite o valor elevado a %lld: ", base);
+  scanf("%lld", &high);
+
+  printf("Digite o valor para dividir a %lld ^ %lld: ", base, high);
+  scanf("%lld", &divider);
+
+  my_mod = mod(power(base, high),divider);
+
+  printf("O resto da é %lld, compatilhe esse valor com o seu amigo\n", my_mod);
+
+
+  printf("Digite o resto da soma do seu amigo: ");
+  scanf("%lld", &mod_friend);
+
+  key_private = mod(power(mod_friend, high), divider);
+
+  printf("O valor da chave privada é %lld\n", key_private); 
+  return 0; 
 }
+
+INT64BYTES power(INT64BYTES base, INT64BYTES high)
+{
+  if(high <= 0)
+    return 1;
+  return (base * power( base, --high));
+  
+}
+
+INT64BYTES mod(INT64BYTES dividend, INT64BYTES divider) 
+{
+  return dividend % divider;
+}
+
+
+
+
